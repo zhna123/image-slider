@@ -66,7 +66,6 @@ dotTracker.addEventListener("click", e => {
 
     const targetDotIndex = dots.findIndex(dot => dot === targetDot)
     const targetSlide = slides[targetDotIndex];
-    console.log(targetDotIndex)
 
     if (targetDotIndex === 0) {
         carouselBtnLeft.classList.add('hidden');
@@ -100,8 +99,26 @@ const clickRightBtn = () => {
     if (!carouselBtnRight.classList.contains('hidden')) {
         carouselBtnRight.click();
     } else {
+        // start over from first slide
         dots[0].click();
     }
 }
 
-window.setInterval(clickRightBtn, 5000);
+let interval = window.setInterval(clickRightBtn, 5000);
+
+const pauseSlide = () => {
+    window.clearInterval(interval);
+}
+
+const resumeSlide = () => {
+    interval = window.setInterval(clickRightBtn, 5000);
+}
+
+slides.forEach(slide => {
+    slide.addEventListener("mouseover", e => {
+        pauseSlide();
+    })
+    slide.addEventListener("mouseout", e => {
+        resumeSlide();
+    })
+});
